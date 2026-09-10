@@ -10,15 +10,15 @@ public static class PrincipleDemo
     /// </summary>
     public static void Run()
     {
-        IWithdrawableAccount savingsAccount = new SavingsAccount();
-        savingsAccount.Deposit(500_000m);
-        WithdrawFrom(savingsAccount, 125_000m);
+        IWithdrawableAccount regularAccount = new RegularPlayerAccount();
+        regularAccount.Deposit(500_000m);
+        WithdrawFrom(regularAccount, 125_000m);
 
-        IAccount fixedTermAccount = new FixedTermAccount();
-        fixedTermAccount.Deposit(1_000_000m);
+        IPlayerAccount restrictedAccount = new RestrictedPlayerAccount();
+        restrictedAccount.Deposit(1_000_000m);
 
-        Console.WriteLine($"Savings account: {savingsAccount.Balance:C0}");
-        Console.WriteLine($"Fixed-term account: {fixedTermAccount.Balance:C0}");
+        Console.WriteLine($"Regular player account: {regularAccount.Balance:C0}");
+        Console.WriteLine($"Restricted player account: {restrictedAccount.Balance:C0}");
     }
 
     /// <summary>

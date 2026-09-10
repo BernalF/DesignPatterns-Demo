@@ -1,38 +1,38 @@
 namespace FactoryPattern;
 
-internal interface IMessageSender
+internal interface INotificationSender
 {
     string Send(string message);
 }
 
-internal sealed class EmailSender : IMessageSender
+internal sealed class EmailSender : INotificationSender
 {
-    public string Send(string message) => $"Email sent: {message}";
+    public string Send(string message) => $"Email notification: {message}";
 }
 
-internal sealed class SmsSender : IMessageSender
+internal sealed class SmsPushSender : INotificationSender
 {
-    public string Send(string message) => $"SMS sent: {message}";
+    public string Send(string message) => $"Push notification: {message}";
 }
 
-internal static class MessageSenderFactory
+internal static class NotificationSenderFactory
 {
-    public static IMessageSender Create(string channel) => channel.ToLowerInvariant() switch
+    public static INotificationSender Create(string channel) => channel.ToLowerInvariant() switch
     {
         "email" => new EmailSender(),
-        "sms" => new SmsSender(),
-        _ => throw new ArgumentOutOfRangeException(nameof(channel), "Unsupported message channel.")
+        "push" => new SmsPushSender(),
+        _ => throw new ArgumentOutOfRangeException(nameof(channel), "Unsupported notification channel.")
     };
 }
 
 /// <summary>Runs the Factory pattern demonstration.</summary>
 public static class PatternDemo
 {
-    /// <summary>Creates a message sender from a channel selection.</summary>
+    /// <summary>Creates a notification sender from a channel selection.</summary>
     public static void Run()
     {
-        IMessageSender sender = MessageSenderFactory.Create("email");
-        Console.WriteLine(sender.Send("Your order is confirmed."));
+        INotificationSender sender = NotificationSenderFactory.Create("email");
+        Console.WriteLine(sender.Send("Your bet has been placed successfully."));
     }
 }
 

@@ -1,12 +1,12 @@
 namespace SingleResponsibility;
 
-/// <summary>Retrieves student data from the in-memory storage.</summary>
-public class StudentRepository
+/// <summary>Retrieves bet slip data from the in-memory storage.</summary>
+public class BetSlipRepository
 {
-    private readonly FakeStorage<Student> storage = new();
+    private readonly FakeStorage<BetSlip> storage = new();
 
-    /// <summary>Initializes the repository with sample students.</summary>
-    public StudentRepository()
+    /// <summary>Initializes the repository with sample bet slips.</summary>
+    public BetSlipRepository()
     {
         InitializeData();
     }
@@ -14,13 +14,13 @@ public class StudentRepository
     /// <summary>Seeds the example data.</summary>
     private void InitializeData()
     {
-        storage.Add(new Student(1, "Peter Parker", [3, 4.5]));
-        storage.Add(new Student(2, "Mary Watson", [4, 5]));
-        storage.Add(new Student(3, "John Smith", [2, 3]));
+        storage.Add(new BetSlip(1, "PLAYER_001", [50m, 100m]));
+        storage.Add(new BetSlip(2, "PLAYER_002", [250m, 125m]));
+        storage.Add(new BetSlip(3, "PLAYER_003", [30m, 45m]));
     }
 
-    /// <summary>Returns all students.</summary>
-    public IEnumerable<Student> GetAll()
+    /// <summary>Returns all bet slips.</summary>
+    public IEnumerable<BetSlip> GetAll()
     {
         return storage.GetAll();
     }

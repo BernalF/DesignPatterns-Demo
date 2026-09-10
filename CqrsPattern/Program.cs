@@ -1,43 +1,43 @@
 namespace CqrsPattern;
 
-internal sealed record CreateOrderCommand(string CustomerName, decimal Total);
-internal sealed record GetOrderSummaryQuery(Guid OrderId);
-internal sealed record OrderSummary(Guid Id, string CustomerName, decimal Total);
+internal sealed record CreateBetCommand(string PlayerId, decimal Amount);
+internal sealed record GetBetHistoryQuery(Guid BetId);
+internal sealed record BetRecord(Guid Id, string PlayerId, decimal Amount);
 
-internal sealed class OrderStore
+internal sealed class BetStore
 {
-    private readonly Dictionary<Guid, OrderSummary> orders = [];
+    private readonly Dictionary<Guid, BetRecord> bets = [];
 
-    public Guid Create(CreateOrderCommand command)
+    public Guid Create(CreateBetCommand command)
     {
-        Guid orderId = Guid.NewGuid();
-        orders[orderId] = new OrderSummary(orderId, command.CustomerName, command.Total);
-        return orderId;
+        Guid betId = Guid.NewGuid();
+        bets[betId] = new BetRecord(betId, command.PlayerId, command.Amount);
+        return betId;
     }
 
-    public OrderSummary? Get(GetOrderSummaryQuery query) => orders.GetValueOrDefault(query.OrderId);
+    public BetRecord? Get(GetBetHistoryQuery query) => bets.GetValueOrDefault(query.BetId);
 }
 
-internal sealed class CreateOrderHandler(OrderStore store)
+internal sealed class CreateBetHandler(BetStore store)
 {
-    public Guid Handle(CreateOrderCommand command) => store.Create(command);
+    public Guid Handle(CreateBetCommand command) => store.Create(command);
 }
 
-internal sealed class GetOrderSummaryHandler(OrderStore store)
+internal sealed class GetBetHistoryHandler(BetStore store)
 {
-    public OrderSummary? Handle(GetOrderSummaryQuery query) => store.Get(query);
+    public BetRecord? Handle(GetBetHistoryQuery query) => store.Get(query);
 }
 
 /// <summary>Runs the CQRS pattern demonstration.</summary>
 public static class PatternDemo
 {
-    /// <summary>Creates an order with a command and reads it with a separate query.</summary>
+    /// <summary>Creates a bet with a command and reads it with a separate query.</summary>
     public static void Run()
     {
-        OrderStore store = new();
-        Guid orderId = new CreateOrderHandler(store).Handle(new CreateOrderCommand("Alex", 125m));
-        OrderSummary? order = new GetOrderSummaryHandler(store).Handle(new GetOrderSummaryQuery(orderId));
-        Console.WriteLine($"Order {order?.Id}: {order?.CustomerName}, total {order?.Total:C}.");
+        BetStore store = new();
+        Guid betId = new CreateBetHandler(store).Handle(new CreateBetCommand("PLAYER_001", 100m));
+        BetRecord? bet = new GetBetHistoryHandler(store).Handle(new GetBetHistoryQuery(betId));
+        Console.WriteLine($"Bet {bet?.Id}: Player {bet?.PlayerId}, amount {bet?.Amount:C}.");
     }
 }
 

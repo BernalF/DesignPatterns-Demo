@@ -1,28 +1,33 @@
 namespace StrategyPattern;
 
-internal interface IDiscountStrategy
+internal interface IOddsCalculationStrategy
 {
-    decimal Apply(decimal subtotal);
+    decimal CalculateOdds(decimal baseOdds);
 }
 
-internal sealed class PercentageDiscount(decimal percentage) : IDiscountStrategy
+internal sealed class FixedOdds(decimal fixedRate) : IOddsCalculationStrategy
 {
-    public decimal Apply(decimal subtotal) => subtotal * (1 - percentage);
+    public decimal CalculateOdds(decimal baseOdds) => fixedRate;
 }
 
-internal sealed class CheckoutService(IDiscountStrategy discountStrategy)
+internal sealed class DynamicOdds(decimal multiplier) : IOddsCalculationStrategy
 {
-    public decimal CalculateTotal(decimal subtotal) => discountStrategy.Apply(subtotal);
+    public decimal CalculateOdds(decimal baseOdds) => baseOdds * multiplier;
+}
+
+internal sealed class BettingService(IOddsCalculationStrategy oddsStrategy)
+{
+    public decimal CalculateFinalOdds(decimal baseOdds) => oddsStrategy.CalculateOdds(baseOdds);
 }
 
 /// <summary>Runs the Strategy pattern demonstration.</summary>
 public static class PatternDemo
 {
-    /// <summary>Calculates a total using a selected discount strategy.</summary>
+    /// <summary>Calculates final odds using a selected odds calculation strategy.</summary>
     public static void Run()
     {
-        CheckoutService checkout = new(new PercentageDiscount(0.10m));
-        Console.WriteLine($"Subtotal: {100m:C}. Total with 10% discount: {checkout.CalculateTotal(100m):C}.");
+        BettingService bettingService = new(new FixedOdds(2.5m));
+        Console.WriteLine($"Base odds: 2.0. Final odds with fixed strategy: {bettingService.CalculateFinalOdds(2.0m):F2}.");
     }
 }
 

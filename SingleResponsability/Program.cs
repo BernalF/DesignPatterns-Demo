@@ -6,16 +6,16 @@
 public static class PrincipleDemo
 {
 	/// <summary>
-	/// Retrieves students and delegates CSV creation to the exporter.
+	/// Retrieves bet slips and delegates CSV creation to the exporter.
 	/// </summary>
 	public static void Run()
 	{
-		StudentRepository studentRepository = new();
-		CsvExporter csvExporter = new();
-		IEnumerable<Student> students = studentRepository.GetAll();
+		BetSlipRepository betSlipRepository = new();
+		IExporter exporter = new CsvExporter();
+		IEnumerable<BetSlip> betSlips = betSlipRepository.GetAll();
 
-		csvExporter.Export(students);
-		Console.WriteLine("Process complete: Students.csv was generated.");
+		exporter.Export(betSlips);
+		Console.WriteLine("Process complete: BetSlips.csv was generated.");
 	}
 }
 

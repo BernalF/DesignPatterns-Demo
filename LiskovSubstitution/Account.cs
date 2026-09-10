@@ -1,20 +1,20 @@
 namespace LiskovSubstitution;
 
-internal interface IAccount
+internal interface IPlayerAccount
 {
     decimal Balance { get; }
 
     /// <summary>
-    /// Adds money to the account.
+    /// Deposits winnings or funds into the player account.
     /// </summary>
     /// <param name="amount">The positive amount to deposit.</param>
     void Deposit(decimal amount);
 }
 
-internal interface IWithdrawableAccount : IAccount
+internal interface IWithdrawableAccount : IPlayerAccount
 {
     /// <summary>
-    /// Removes money from an account that allows withdrawals.
+    /// Withdraws funds from a player account that allows withdrawals.
     /// </summary>
     /// <param name="amount">The positive amount to withdraw.</param>
     void Withdraw(decimal amount);

@@ -20,18 +20,18 @@ internal static class SolidPresenter
 
     private static readonly Lesson[] lessons =
     [
-        new("S - Single Responsibility Principle (SRP)", "A class should have one reason to change.", "StudentRepository retrieves students; CsvExporter creates a CSV.", "Use it when a class starts mixing business rules, persistence, formatting, or external delivery.", """
-        IEnumerable<Student> students = repository.GetAll();
-        exporter.Export(students);
+        new("S - Single Responsibility Principle (SRP)", "A class should have one reason to change.", "BetSlipRepository retrieves bet slips; CsvExporter creates a CSV export.", "Use it when a class starts mixing business rules, persistence, formatting, or external delivery.", """
+        IEnumerable<BetSlip> slips = repository.GetAll();
+        exporter.Export(slips);
         """, SingleResponsibilityDemo.Run),
-        new("O - Open/Closed Principle (OCP)", "Software entities should be open for extension and closed for modification.", "The salary loop relies on Employee, so new employee types extend behavior without changing the loop.", "Use it when new variants are expected, such as payment methods, discounts, or employee types.", """
-        foreach (Employee employee in employees)
+        new("O - Open/Closed Principle (OCP)", "Software entities should be open for extension and closed for modification.", "The commission calculation loop relies on PlayerTier, so new tier types extend behavior without changing the loop.", "Use it when new variants are expected, such as player tiers, bet types, or calculation strategies.", """
+        foreach (PlayerTier player in players)
         {
-            decimal salary = employee.CalculateSalary();
+            decimal commission = player.CalculateCommission();
         }
         """, OpenCloseDemo.Run),
-        new("L - Liskov Substitution Principle (LSP)", "An implementation must preserve the promises made by its abstraction.", "FixedTermAccount does not claim to support Withdraw; only SavingsAccount can implement IWithdrawableAccount.", "Use it whenever inheritance or an interface represents a capability that callers depend on.", """
-        internal interface IWithdrawableAccount : IAccount
+        new("L - Liskov Substitution Principle (LSP)", "An implementation must preserve the promises made by its abstraction.", "RestrictedPlayerAccount does not claim to support Withdraw; only RegularPlayerAccount can implement IWithdrawableAccount.", "Use it whenever inheritance or an interface represents a capability that callers depend on.", """
+        internal interface IWithdrawableAccount : IPlayerAccount
         {
             void Withdraw(decimal amount);
         }
@@ -41,17 +41,17 @@ internal static class SolidPresenter
             account.Withdraw(amount);
         }
         """, LiskovSubstitutionDemo.Run, """
-        class FixedTermAccount : IWithdrawableAccount
+        class RestrictedPlayerAccount : IWithdrawableAccount
         {
             public void Withdraw(decimal amount) => throw new NotSupportedException();
         }
         """),
-        new("I - Interface Segregation Principle (ISP)", "Clients should not depend on methods they do not use.", "BasicPrinter implements IPrinter only; scanning is a separate capability.", "Use it when a broad interface forces implementations to throw or provide meaningless methods.", """
-        interface IPrinter { void Print(string document); }
-        interface IScanner { string Scan(string documentName); }
+        new("I - Interface Segregation Principle (ISP)", "Clients should not depend on methods they do not use.", "SimpleSlotMachine implements ISlotMachine only; sports betting is a separate capability.", "Use it when a broad interface forces implementations to throw or provide meaningless methods.", """
+        interface ISlotMachine { void Operate(string gameId); }
+        interface ISportsBettingTerminal { string PlaceBet(string eventName); }
         """, InterfaceSegregationDemo.Run),
-        new("D - Dependency Inversion Principle (DIP)", "High-level modules should depend on abstractions, not concrete implementations.", "NotificationService receives IMessageSender instead of creating EmailSender itself.", "Use it at boundaries such as databases, HTTP APIs, messaging, storage, and external providers.", """
-        internal sealed class NotificationService(IMessageSender sender)
+        new("D - Dependency Inversion Principle (DIP)", "High-level modules should depend on abstractions, not concrete implementations.", "PlayerNotificationService receives INotificationChannel instead of creating EmailNotificationChannel itself.", "Use it at boundaries such as databases, HTTP APIs, messaging, storage, and external providers.", """
+        internal sealed class PlayerNotificationService(INotificationChannel channel)
         {
             // The service depends on the abstraction.
         }

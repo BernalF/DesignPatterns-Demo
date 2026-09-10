@@ -6,26 +6,26 @@
 public static class PrincipleDemo
 {
     /// <summary>
-    /// Calculates and prints the salary for different employee types.
+    /// Calculates and prints the commission for different player tiers.
     /// </summary>
     public static void Run()
     {
-        CalculateSalaryMonthly(new List<Employee>
+        CalculateCommissions(new List<PlayerTier>
         {
-            new EmployeeFullTime("Peter Parker", 160),
-            new EmployeePartTime("Mary Watson", 180)
+            new RegularPlayer("PLAYER_001", 5000m),
+            new VipPlayer("PLAYER_002", 15000m)
         });
     }
 
     /// <summary>
-    /// Prints each salary while relying on the employee abstraction.
+    /// Prints each commission while relying on the player tier abstraction.
     /// </summary>
-    private static void CalculateSalaryMonthly(List<Employee> employees)
+    private static void CalculateCommissions(List<PlayerTier> players)
     {
-        foreach (Employee employee in employees)
+        foreach (PlayerTier player in players)
         {
-            decimal salary = employee.CalculateSalary();
-            Console.WriteLine($"Employee: {employee.Fullname}, Payment: {salary:C1}");
+            decimal commission = player.CalculateCommission();
+            Console.WriteLine($"Player: {player.PlayerId}, Commission: {commission:C}");
         }
     }
 }

@@ -5,9 +5,9 @@ internal interface ICommand
     string Execute();
 }
 
-internal sealed record SendWelcomeEmailCommand(string Email) : ICommand
+internal sealed record PlaceBetCommand(string PlayerId, decimal Amount) : ICommand
 {
-    public string Execute() => $"Welcome email sent to {Email}.";
+    public string Execute() => $"Bet placed for {PlayerId} with amount {Amount:C}.";
 }
 
 internal sealed class CommandInvoker
@@ -18,11 +18,11 @@ internal sealed class CommandInvoker
 /// <summary>Runs the Command pattern demonstration.</summary>
 public static class PatternDemo
 {
-    /// <summary>Wraps and executes an email action as a command object.</summary>
+    /// <summary>Wraps and executes a betting action as a command object.</summary>
     public static void Run()
     {
         CommandInvoker invoker = new();
-        Console.WriteLine(invoker.Execute(new SendWelcomeEmailCommand("developer@example.com")));
+        Console.WriteLine(invoker.Execute(new PlaceBetCommand("PLAYER_789", 50.00m)));
     }
 }
 

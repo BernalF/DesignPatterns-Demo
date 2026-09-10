@@ -6,25 +6,25 @@ namespace InterfaceSegregation;
 public static class PrincipleDemo
 {
     /// <summary>
-    /// Uses only the printer and scanner capabilities required by each client.
+    /// Uses only the gaming capabilities required by each terminal client.
     /// </summary>
     public static void Run()
     {
-        IPrinter basicPrinter = new BasicPrinter();
-        IPrinter multiFunctionPrinter = new MultiFunctionPrinter();
-        IScanner scanner = new MultiFunctionPrinter();
+        ISlotMachine simpleSlot = new SimpleSlotMachine();
+        ISlotMachine advancedTerminal = new AdvancedGamingTerminal();
+        ISportsBettingTerminal sportsTerminal = new AdvancedGamingTerminal();
 
-        PrintReport(basicPrinter);
-        PrintReport(multiFunctionPrinter);
-        Console.WriteLine(scanner.Scan("September invoice"));
+        OperateSlot(simpleSlot);
+        OperateSlot(advancedTerminal);
+        Console.WriteLine(sportsTerminal.PlaceBet("Champions League Final"));
     }
 
     /// <summary>
-    /// Prints a report through the focused printing contract.
+    /// Operates a slot machine through the focused gaming contract.
     /// </summary>
-    private static void PrintReport(IPrinter printer)
+    private static void OperateSlot(ISlotMachine machine)
     {
-        printer.Print("Monthly report");
+        machine.Operate("Mega Jackpot Slots");
     }
 }
 

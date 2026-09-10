@@ -1,50 +1,50 @@
 namespace InterfaceSegregation;
 
-internal interface IPrinter
+internal interface ISlotMachine
 {
     /// <summary>
-    /// Prints the supplied document.
+    /// Operates a slot machine game.
     /// </summary>
-    /// <param name="document">The document to print.</param>
-    void Print(string document);
+    /// <param name="gameId">The slot game identifier.</param>
+    void Operate(string gameId);
 }
 
-internal interface IScanner
+internal interface ISportsBettingTerminal
 {
     /// <summary>
-    /// Scans a physical document into a digital representation.
+    /// Places a sports bet on the selected event.
     /// </summary>
-    /// <param name="documentName">The name assigned to the scanned document.</param>
-    /// <returns>The scan result.</returns>
-    string Scan(string documentName);
+    /// <param name="eventName">The name of the sports event.</param>
+    /// <returns>The bet confirmation.</returns>
+    string PlaceBet(string eventName);
 }
 
-internal sealed class BasicPrinter : IPrinter
+internal sealed class SimpleSlotMachine : ISlotMachine
 {
     /// <summary>
-    /// Prints a document without requiring scan capabilities.
+    /// Operates a slot machine without sports betting capabilities.
     /// </summary>
-    public void Print(string document)
+    public void Operate(string gameId)
     {
-        Console.WriteLine($"Printing: {document}");
+        Console.WriteLine($"Operating slot game: {gameId}");
     }
 }
 
-internal sealed class MultiFunctionPrinter : IPrinter, IScanner
+internal sealed class AdvancedGamingTerminal : ISlotMachine, ISportsBettingTerminal
 {
     /// <summary>
-    /// Prints the supplied document.
+    /// Operates a slot machine game.
     /// </summary>
-    public void Print(string document)
+    public void Operate(string gameId)
     {
-        Console.WriteLine($"Printing: {document}");
+        Console.WriteLine($"Operating slot game: {gameId}");
     }
 
     /// <summary>
-    /// Scans the supplied document name.
+    /// Places a sports bet through the terminal.
     /// </summary>
-    public string Scan(string documentName)
+    public string PlaceBet(string eventName)
     {
-        return $"Scanned: {documentName}";
+        return $"Bet placed on: {eventName}";
     }
 }

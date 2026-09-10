@@ -9,11 +9,11 @@ internal sealed record Result<T>(T? Value, string? Error)
     public static Result<T> Failure(string error) => new(default, error);
 }
 
-internal sealed class RegistrationService
+internal sealed class WithdrawalService
 {
-    public Result<string> Register(string email) => email.Contains('@')
-        ? Result<string>.Success($"Registered {email}.")
-        : Result<string>.Failure("A valid email address is required.");
+    public Result<string> RequestWithdrawal(decimal amount) => amount > 0
+        ? Result<string>.Success($"Withdrawal of {amount:C} approved.")
+        : Result<string>.Failure("Withdrawal amount must be greater than zero.");
 }
 
 /// <summary>Runs the Result pattern demonstration.</summary>
@@ -22,7 +22,7 @@ public static class PatternDemo
     /// <summary>Represents an expected validation failure as a value rather than an exception.</summary>
     public static void Run()
     {
-        Result<string> result = new RegistrationService().Register("invalid-email");
+        Result<string> result = new WithdrawalService().RequestWithdrawal(-100m);
         Console.WriteLine(result.IsSuccess ? result.Value : $"Validation error: {result.Error}");
     }
 }

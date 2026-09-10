@@ -22,32 +22,32 @@ internal static class PatternsPresenter
 
     private static readonly Lesson[] lessons =
     [
-        new("Strategy", "Choose an interchangeable algorithm or policy at runtime.", "CheckoutService receives IDiscountStrategy.", "Use it for variants such as discounts, shipping costs, validation rules, or retry policies.", """
-        internal sealed class CheckoutService(IDiscountStrategy strategy)
+        new("Strategy", "Choose an interchangeable algorithm or policy at runtime.", "BettingService receives IOddsCalculationStrategy.", "Use it for variants such as odds calculations, bet types, validation rules, or payout strategies.", """
+        internal sealed class BettingService(IOddsCalculationStrategy strategy)
         {
-            public decimal CalculateTotal(decimal subtotal) => strategy.Apply(subtotal);
+            public decimal CalculateFinalOdds(decimal baseOdds) => strategy.CalculateOdds(baseOdds);
         }
         """, StrategyDemo.Run),
-        new("Factory", "Centralize object creation when the concrete type varies.", "MessageSenderFactory selects the IMessageSender implementation.", "Use it when configuration, input, or environment selects an implementation.", """
-        IMessageSender sender = MessageSenderFactory.Create("email");
+        new("Factory", "Centralize object creation when the concrete type varies.", "NotificationSenderFactory selects the INotificationSender implementation.", "Use it when configuration, input, or environment selects an implementation.", """
+        INotificationSender sender = NotificationSenderFactory.Create("email");
         """, FactoryDemo.Run),
-        new("Adapter", "Convert an incompatible API into the interface your application expects.", "LegacyPaymentAdapter translates Charge into ProcessPayment.", "Use it when integrating legacy code or third-party SDKs.", """
-        bool Charge(decimal amount) => provider.ProcessPayment(amount) == "APPROVED";
+        new("Adapter", "Convert an incompatible API into the interface your application expects.", "LegacyPaymentAdapter translates ProcessWithdrawal into ProcessTransaction.", "Use it when integrating legacy code or third-party SDKs.", """
+        bool ProcessWithdrawal(decimal amount) => provider.ProcessTransaction(amount) == "SUCCESS";
         """, AdapterDemo.Run),
-        new("Decorator", "Add behavior by wrapping an object without changing its original class.", "CachedProductCatalog wraps IProductCatalog and preserves its API.", "Use it for cross-cutting behavior such as caching, logging, metrics, retries, or authorization.", """
-        IProductCatalog catalog = new CachedProductCatalog(new ProductCatalog());
+        new("Decorator", "Add behavior by wrapping an object without changing its original class.", "CachedPlayerRepository wraps IPlayerRepository and preserves its API.", "Use it for cross-cutting behavior such as caching, logging, metrics, retries, or authorization.", """
+        IPlayerRepository repository = new CachedPlayerRepository(new PlayerRepository());
         """, DecoratorDemo.Run),
-        new("Command", "Represent a request or action as an object.", "SendWelcomeEmailCommand carries both the action and its required data.", "Use it for queues, jobs, undo/redo, auditing, retries, or CQRS writes.", """
-        ICommand command = new SendWelcomeEmailCommand("developer@example.com");
+        new("Command", "Represent a request or action as an object.", "PlaceBetCommand carries both the action and its required data (player and amount).", "Use it for queues, jobs, undo/redo, auditing, retries, or CQRS writes.", """
+        ICommand command = new PlaceBetCommand("PLAYER_789", 50.00m);
         string result = invoker.Execute(command);
         """, CommandDemo.Run),
-        new("Result Pattern", "Represent expected success or failure as a returned value.", "RegistrationService returns Result<string> instead of using exceptions for validation.", "Use it for expected business failures such as invalid input, missing resources, or rule violations.", """
-        Result<string> result = registrationService.Register(email);
+        new("Result Pattern", "Represent expected success or failure as a returned value.", "WithdrawalService returns Result<string> instead of using exceptions for validation.", "Use it for expected business failures such as invalid amount, insufficient balance, or verification pending.", """
+        Result<string> result = withdrawalService.RequestWithdrawal(amount);
         if (!result.IsSuccess) return result.Error;
         """, ResultDemo.Run),
-        new("CQRS", "Separate commands that change state from queries that read state.", "CreateOrderHandler writes; GetOrderSummaryHandler reads.", "Use it when write workflows and read models have meaningfully different rules, performance needs, or permissions. Avoid it for simple CRUD.", """
-        Guid id = createOrderHandler.Handle(new CreateOrderCommand("Alex", 125m));
-        OrderSummary? order = getOrderHandler.Handle(new GetOrderSummaryQuery(id));
+        new("CQRS", "Separate commands that change state from queries that read state.", "CreateBetHandler writes; GetBetHistoryHandler reads.", "Use it when write workflows and read models have meaningfully different rules, performance needs, or permissions. Avoid it for simple CRUD.", """
+        Guid id = createBetHandler.Handle(new CreateBetCommand("PLAYER_001", 100m));
+        BetRecord? bet = getHistoryHandler.Handle(new GetBetHistoryQuery(id));
         """, CqrsDemo.Run)
     ];
 }

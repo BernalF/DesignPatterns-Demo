@@ -1,28 +1,28 @@
 namespace AdapterPattern;
 
-internal interface IPaymentGateway
+internal interface IWithdrawalProcessor
 {
-    bool Charge(decimal amount);
+    bool ProcessWithdrawal(decimal amount);
 }
 
 internal sealed class LegacyPaymentProvider
 {
-    public string ProcessPayment(decimal amount) => amount > 0 ? "APPROVED" : "DECLINED";
+    public string ProcessTransaction(decimal amount) => amount > 0 ? "SUCCESS" : "FAILED";
 }
 
-internal sealed class LegacyPaymentAdapter(LegacyPaymentProvider provider) : IPaymentGateway
+internal sealed class LegacyPaymentAdapter(LegacyPaymentProvider provider) : IWithdrawalProcessor
 {
-    public bool Charge(decimal amount) => provider.ProcessPayment(amount) == "APPROVED";
+    public bool ProcessWithdrawal(decimal amount) => provider.ProcessTransaction(amount) == "SUCCESS";
 }
 
 /// <summary>Runs the Adapter pattern demonstration.</summary>
 public static class PatternDemo
 {
-    /// <summary>Uses a legacy payment provider through the application's payment contract.</summary>
+    /// <summary>Uses a legacy payment provider through the application's withdrawal contract.</summary>
     public static void Run()
     {
-        IPaymentGateway paymentGateway = new LegacyPaymentAdapter(new LegacyPaymentProvider());
-        Console.WriteLine($"Payment approved: {paymentGateway.Charge(49.99m)}");
+        IWithdrawalProcessor withdrawalProcessor = new LegacyPaymentAdapter(new LegacyPaymentProvider());
+        Console.WriteLine($"Withdrawal approved: {withdrawalProcessor.ProcessWithdrawal(250.50m)}");
     }
 }
 

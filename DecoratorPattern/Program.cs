@@ -1,40 +1,40 @@
 namespace DecoratorPattern;
 
-internal interface IProductCatalog
+internal interface IPlayerRepository
 {
-    string GetProductName(int productId);
+    string GetPlayerName(int playerId);
 }
 
-internal sealed class ProductCatalog : IProductCatalog
+internal sealed class PlayerRepository : IPlayerRepository
 {
-    public string GetProductName(int productId) => $"Product {productId} from database";
+    public string GetPlayerName(int playerId) => $"Player {playerId} from database";
 }
 
-internal sealed class CachedProductCatalog(IProductCatalog inner) : IProductCatalog
+internal sealed class CachedPlayerRepository(IPlayerRepository inner) : IPlayerRepository
 {
     private readonly Dictionary<int, string> cache = [];
 
-    public string GetProductName(int productId)
+    public string GetPlayerName(int playerId)
     {
-        if (!cache.TryGetValue(productId, out string? productName))
+        if (!cache.TryGetValue(playerId, out string? playerName))
         {
-            productName = inner.GetProductName(productId);
-            cache[productId] = productName;
+            playerName = inner.GetPlayerName(playerId);
+            cache[playerId] = playerName;
         }
 
-        return productName;
+        return playerName;
     }
 }
 
 /// <summary>Runs the Decorator pattern demonstration.</summary>
 public static class PatternDemo
 {
-    /// <summary>Adds caching behavior without changing the product catalog.</summary>
+    /// <summary>Adds caching behavior without changing the player repository.</summary>
     public static void Run()
     {
-        IProductCatalog catalog = new CachedProductCatalog(new ProductCatalog());
-        Console.WriteLine(catalog.GetProductName(7));
-        Console.WriteLine(catalog.GetProductName(7));
+        IPlayerRepository repository = new CachedPlayerRepository(new PlayerRepository());
+        Console.WriteLine(repository.GetPlayerName(42));
+        Console.WriteLine(repository.GetPlayerName(42));
         Console.WriteLine("The second call is served by the decorator cache.");
     }
 }

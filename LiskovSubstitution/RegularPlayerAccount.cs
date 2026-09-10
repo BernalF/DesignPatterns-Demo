@@ -1,11 +1,11 @@
 namespace LiskovSubstitution;
 
-internal sealed class SavingsAccount : IWithdrawableAccount
+internal sealed class RegularPlayerAccount : IWithdrawableAccount
 {
     public decimal Balance { get; private set; }
 
     /// <summary>
-    /// Adds a positive amount to the savings account.
+    /// Deposits winnings or funds into the regular player account.
     /// </summary>
     public void Deposit(decimal amount)
     {
@@ -14,7 +14,7 @@ internal sealed class SavingsAccount : IWithdrawableAccount
     }
 
     /// <summary>
-    /// Withdraws a positive amount when the account has sufficient funds.
+    /// Withdraws funds when the account has sufficient balance.
     /// </summary>
     public void Withdraw(decimal amount)
     {
@@ -22,7 +22,7 @@ internal sealed class SavingsAccount : IWithdrawableAccount
 
         if (amount > Balance)
         {
-            throw new InvalidOperationException("Insufficient balance.");
+            throw new InvalidOperationException("Insufficient balance for withdrawal.");
         }
 
         Balance -= amount;

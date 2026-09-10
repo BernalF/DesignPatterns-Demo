@@ -6,14 +6,14 @@ namespace DependencyInversion;
 public static class PrincipleDemo
 {
 	/// <summary>
-	/// Creates a high-level notification service with an injected message abstraction.
+	/// Creates a high-level notification service with an injected notification channel abstraction.
 	/// </summary>
 	public static void Run()
 	{
-		IMessageSender messageSender = new EmailSender();
-		NotificationService notificationService = new(messageSender);
+		INotificationChannel notificationChannel = new EmailNotificationChannel();
+		PlayerNotificationService notificationService = new(notificationChannel);
 
-		notificationService.NotifyWelcome("user@example.com");
+		notificationService.NotifyWelcome("PLAYER_12345");
 	}
 }
 
