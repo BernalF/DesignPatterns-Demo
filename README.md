@@ -49,11 +49,11 @@ The following software definitions are concise paraphrases of the principles pop
 
 | Project | Principle | Example |
 | --- | --- | --- |
-| `SingleResponsability` | SRP | `StudentRepository` retrieves students and `CsvExporter` generates the CSV file. |
-| `OpenClosePrinciple` | OCP | Salary calculation works with the `Employee` abstraction, so new employee types can be added without changing the processing loop. |
-| `LiskovSubstitution` | LSP | Only accounts that can truly withdraw implement `IWithdrawableAccount`. A fixed-term account does not make that false promise. |
-| `InterfaceSegregation` | ISP | Printing and scanning use focused interfaces: `IPrinter` and `IScanner`. |
-| `DependencyInversion` | DIP | `NotificationService` depends on `IMessageSender`, allowing the delivery channel to change independently. |
+| `SingleResponsability` | SRP | `BetSlipRepository` retrieves bet slips and `CsvExporter` generates the CSV file. |
+| `OpenClosePrinciple` | OCP | Commission calculation works with the `PlayerTier` abstraction, so new player tiers (VIP, Regular, HighRoller) can be added without changing the processing loop. |
+| `LiskovSubstitution` | LSP | Only accounts that can truly withdraw implement `IWithdrawableAccount`. A restricted player account does not make that false promise. |
+| `InterfaceSegregation` | ISP | Slot machines and sports betting terminals use focused interfaces: `ISlotMachine` and `ISportsBettingTerminal`. |
+| `DependencyInversion` | DIP | `PlayerNotificationService` depends on `INotificationChannel`, allowing the delivery channel (email, SMS, push) to change independently. |
 | `StudyPresentation` | Interactive presentation | Presents all five SOLID examples in one console session. |
 
 ## Design Patterns
@@ -62,13 +62,13 @@ The following patterns complement SOLID. They are practical techniques for organ
 
 | Project | Pattern | Example |
 | --- | --- | --- |
-| `StrategyPattern` | Strategy | `CheckoutService` receives a discount algorithm that can be replaced without changing checkout logic. |
-| `FactoryPattern` | Factory | `MessageSenderFactory` creates an email or SMS sender from the selected channel. |
-| `AdapterPattern` | Adapter | `LegacyPaymentAdapter` makes a legacy payment provider usable as `IPaymentGateway`. |
-| `DecoratorPattern` | Decorator | `CachedProductCatalog` adds caching to `IProductCatalog` without changing the catalog. |
-| `CommandPattern` | Command | `SendWelcomeEmailCommand` represents an email action as an object. |
-| `ResultPattern` | Result Pattern | `RegistrationService` returns success or validation failure as `Result<T>`. |
-| `CqrsPattern` | CQRS | Separate handlers create an order with a command and read it with a query. |
+| `StrategyPattern` | Strategy | `BettingService` receives an odds calculation strategy that can be replaced without changing betting logic. |
+| `FactoryPattern` | Factory | `NotificationSenderFactory` creates an email or push notification sender from the selected channel. |
+| `AdapterPattern` | Adapter | `LegacyPaymentAdapter` makes a legacy payment provider usable as `IWithdrawalProcessor`. |
+| `DecoratorPattern` | Decorator | `CachedPlayerRepository` adds caching to `IPlayerRepository` without changing the repository. |
+| `CommandPattern` | Command | `PlaceBetCommand` represents a betting action as an object. |
+| `ResultPattern` | Result Pattern | `WithdrawalService` returns success or validation failure as `Result<T>`. |
+| `CqrsPattern` | CQRS | Separate handlers create a bet with a command and read it with a query. |
 | `StudyPresentation` | Interactive presentation | Also presents the seven pattern examples in one console session. |
 
 ### Pattern Definitions

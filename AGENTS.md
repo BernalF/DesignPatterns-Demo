@@ -12,20 +12,20 @@ This is an **educational C# solution** that demonstrates SOLID principles and mo
 ## Project Structure
 
 ### SOLID Principles (5 projects)
-- **SingleResponsability**: Each class has one job → StudentRepository (data) + CsvExporter (export)
-- **OpenClosePrinciple**: Extend without editing → New employee types via `Employee` abstraction
-- **LiskovSubstitution**: Contract-respecting subtypes → Only withdrawable accounts implement `IWithdrawableAccount`
-- **InterfaceSegregation**: Small, focused contracts → `IPrinter` and `IScanner` instead of multi-method device interface
-- **DependencyInversion**: Abstract dependencies → `NotificationService` depends on `IMessageSender`, not concrete channels
+- **SingleResponsability**: Each class has one job → BetSlipRepository (data) + CsvExporter (export)
+- **OpenClosePrinciple**: Extend without editing → New player tiers via `PlayerTier` abstraction (RegularPlayer, VipPlayer)
+- **LiskovSubstitution**: Contract-respecting subtypes → Only withdrawable accounts implement `IWithdrawableAccount` (RegularPlayerAccount vs RestrictedPlayerAccount)
+- **InterfaceSegregation**: Small, focused contracts → `ISlotMachine` and `ISportsBettingTerminal` instead of multi-method device interface
+- **DependencyInversion**: Abstract dependencies → `PlayerNotificationService` depends on `INotificationChannel`, not concrete channels
 
 ### Design Patterns (7 projects)
-- **StrategyPattern**: Interchangeable algorithms (`IDiscountStrategy`)
-- **FactoryPattern**: Centralized object creation (`MessageSenderFactory`)
-- **AdapterPattern**: Interface conversion (`LegacyPaymentAdapter` → `IPaymentGateway`)
-- **DecoratorPattern**: Add behavior transparently (`CachedProductCatalog` wraps `IProductCatalog`)
-- **CommandPattern**: Requests as objects (`SendWelcomeEmailCommand`)
-- **ResultPattern**: Explicit success/failure (`Result<T>`)
-- **CqrsPattern**: Separate read/write (`ICommand` / `IQuery` handlers)
+- **StrategyPattern**: Interchangeable algorithms (`IOddsCalculationStrategy` - FixedOdds vs DynamicOdds)
+- **FactoryPattern**: Centralized object creation (`NotificationSenderFactory`)
+- **AdapterPattern**: Interface conversion (`LegacyPaymentAdapter` → `IWithdrawalProcessor`)
+- **DecoratorPattern**: Add behavior transparently (`CachedPlayerRepository` wraps `IPlayerRepository`)
+- **CommandPattern**: Requests as objects (`PlaceBetCommand`)
+- **ResultPattern**: Explicit success/failure (`Result<T>` for withdrawal validation)
+- **CqrsPattern**: Separate read/write (CreateBetHandler / GetBetHistoryHandler)
 
 ### Presentation (2 projects)
 - **StudyPresentation**: Main console entry point (menu-driven, color-coded slides, keystroke navigation)
@@ -111,9 +111,9 @@ cd SingleResponsability
 dotnet run
 ```
 
-**Build and run with output:**
+**Build and run a specific project:**
 ```bash
-dotnet run --project .\SingleResponsability\
+dotnet run --project .\StrategyPattern\
 ```
 
 ## Adding New Examples
