@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\AdapterPattern\AdapterPattern.csproj" />
+    <ProjectReference Include="..\CommandPattern\CommandPattern.csproj" />
+    <ProjectReference Include="..\CqrsPattern\CqrsPattern.csproj" />
+    <ProjectReference Include="..\DecoratorPattern\DecoratorPattern.csproj" />
+    <ProjectReference Include="..\DependencyInversion\DependencyInversion.csproj" />
+    <ProjectReference Include="..\FactoryPattern\FactoryPattern.csproj" />
+    <ProjectReference Include="..\InterfaceSegregation\InterfaceSegregation.csproj" />
+    <ProjectReference Include="..\LiskovSubstitution\LiskovSubstitution.csproj" />
+    <ProjectReference Include="..\OpenClosePrinciple\OpenClose.csproj" />
+    <ProjectReference Include="..\ResultPattern\ResultPattern.csproj" />
+    <ProjectReference Include="..\SingleResponsability\SingleResponsibility.csproj" />
+    <ProjectReference Include="..\StrategyPattern\StrategyPattern.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>StudyPresentation</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>
