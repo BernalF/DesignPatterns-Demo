@@ -1,20 +1,5 @@
 namespace AdapterPattern;
 
-internal interface IWithdrawalProcessor
-{
-    bool ProcessWithdrawal(decimal amount);
-}
-
-internal sealed class LegacyPaymentProvider
-{
-    public string ProcessTransaction(decimal amount) => amount > 0 ? "SUCCESS" : "FAILED";
-}
-
-internal sealed class LegacyPaymentAdapter(LegacyPaymentProvider provider) : IWithdrawalProcessor
-{
-    public bool ProcessWithdrawal(decimal amount) => provider.ProcessTransaction(amount) == "SUCCESS";
-}
-
 /// <summary>Runs the Adapter pattern demonstration.</summary>
 public static class PatternDemo
 {

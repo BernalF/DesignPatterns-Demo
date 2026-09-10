@@ -5,12 +5,12 @@ namespace OpenClose
     {
         private const decimal COMMISSION_RATE = 0.05m; // 5% commission
 
-        public RegularPlayer(string playerId, decimal totalWagers)
-            : base(playerId, totalWagers) { }
+        public RegularPlayer(string playerId, decimal totalBetAmount)
+            : base(playerId, totalBetAmount) { }
 
         public override decimal CalculateCommission()
         {
-            return COMMISSION_RATE * TotalWagers;
+            return COMMISSION_RATE * TotalBetAmount;
         }
     }
 }

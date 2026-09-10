@@ -1,31 +1,5 @@
 namespace DecoratorPattern;
 
-internal interface IPlayerRepository
-{
-    string GetPlayerName(int playerId);
-}
-
-internal sealed class PlayerRepository : IPlayerRepository
-{
-    public string GetPlayerName(int playerId) => $"Player {playerId} from database";
-}
-
-internal sealed class CachedPlayerRepository(IPlayerRepository inner) : IPlayerRepository
-{
-    private readonly Dictionary<int, string> cache = [];
-
-    public string GetPlayerName(int playerId)
-    {
-        if (!cache.TryGetValue(playerId, out string? playerName))
-        {
-            playerName = inner.GetPlayerName(playerId);
-            cache[playerId] = playerName;
-        }
-
-        return playerName;
-    }
-}
-
 /// <summary>Runs the Decorator pattern demonstration.</summary>
 public static class PatternDemo
 {

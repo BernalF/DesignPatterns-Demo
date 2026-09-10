@@ -1,6 +1,6 @@
 namespace SingleResponsibility;
 
-/// <summary>Provides an in-memory collection for the student example.</summary>
+/// <summary>Provides an in-memory collection for the casino demo example.</summary>
 public class FakeStorage<T>
 {
     private readonly List<T> collection = [];

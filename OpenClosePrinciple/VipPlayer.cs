@@ -6,17 +6,17 @@ namespace OpenClose
         private const decimal BASE_COMMISSION_RATE = 0.08m; // 8% base commission
         private const decimal LOYALTY_BONUS = 0.02m; // 2% extra for high volume
 
-        public VipPlayer(string playerId, decimal totalWagers) : base(playerId, totalWagers)
+        public VipPlayer(string playerId, decimal totalBetAmount) : base(playerId, totalBetAmount)
         {
         }
 
         public override decimal CalculateCommission()
         {
-            decimal commission = BASE_COMMISSION_RATE * TotalWagers;
+            decimal commission = BASE_COMMISSION_RATE * TotalBetAmount;
 
-            if (TotalWagers > 10000m)
+            if (TotalBetAmount > 10000m)
             {
-                decimal bonusAmount = LOYALTY_BONUS * (TotalWagers - 10000m);
+                decimal bonusAmount = LOYALTY_BONUS * (TotalBetAmount - 10000m);
                 commission += bonusAmount;
             }
 

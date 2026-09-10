@@ -12,11 +12,11 @@ public static class PrincipleDemo
     {
         ISlotMachine simpleSlot = new SimpleSlotMachine();
         ISlotMachine advancedTerminal = new AdvancedGamingTerminal();
-        ISportsBettingTerminal sportsTerminal = new AdvancedGamingTerminal();
+        ILiveDealerTable liveDealerTable = new AdvancedGamingTerminal();
 
         OperateSlot(simpleSlot);
         OperateSlot(advancedTerminal);
-        Console.WriteLine(sportsTerminal.PlaceBet("Champions League Final"));
+        Console.WriteLine(liveDealerTable.OpenTable("VIP Blackjack"));
     }
 
     /// <summary>

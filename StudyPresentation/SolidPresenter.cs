@@ -20,9 +20,9 @@ internal static class SolidPresenter
 
     private static readonly Lesson[] lessons =
     [
-        new("S - Single Responsibility Principle (SRP)", "A class should have one reason to change.", "BetSlipRepository retrieves bet slips; CsvExporter creates a CSV export.", "Use it when a class starts mixing business rules, persistence, formatting, or external delivery.", """
-        IEnumerable<BetSlip> slips = repository.GetAll();
-        exporter.Export(slips);
+        new("S - Single Responsibility Principle (SRP)", "A class should have one reason to change.", "BetRepository retrieves bets; CsvExporter creates a CSV export.", "Use it when a class starts mixing business rules, persistence, formatting, or external delivery.", """
+        IEnumerable<Bet> bets = repository.GetAll();
+        exporter.Export(bets);
         """, SingleResponsibilityDemo.Run),
         new("O - Open/Closed Principle (OCP)", "Software entities should be open for extension and closed for modification.", "The commission calculation loop relies on PlayerTier, so new tier types extend behavior without changing the loop.", "Use it when new variants are expected, such as player tiers, bet types, or calculation strategies.", """
         foreach (PlayerTier player in players)
@@ -46,9 +46,9 @@ internal static class SolidPresenter
             public void Withdraw(decimal amount) => throw new NotSupportedException();
         }
         """),
-        new("I - Interface Segregation Principle (ISP)", "Clients should not depend on methods they do not use.", "SimpleSlotMachine implements ISlotMachine only; sports betting is a separate capability.", "Use it when a broad interface forces implementations to throw or provide meaningless methods.", """
+        new("I - Interface Segregation Principle (ISP)", "Clients should not depend on methods they do not use.", "SimpleSlotMachine implements ISlotMachine only; live dealer access is a separate capability.", "Use it when a broad interface forces implementations to throw or provide meaningless methods.", """
         interface ISlotMachine { void Operate(string gameId); }
-        interface ISportsBettingTerminal { string PlaceBet(string eventName); }
+        interface ILiveDealerTable { string OpenTable(string tableName); }
         """, InterfaceSegregationDemo.Run),
         new("D - Dependency Inversion Principle (DIP)", "High-level modules should depend on abstractions, not concrete implementations.", "PlayerNotificationService receives INotificationChannel instead of creating EmailNotificationChannel itself.", "Use it at boundaries such as databases, HTTP APIs, messaging, storage, and external providers.", """
         internal sealed class PlayerNotificationService(INotificationChannel channel)

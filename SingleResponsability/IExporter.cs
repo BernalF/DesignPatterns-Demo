@@ -1,8 +1,8 @@
 ﻿namespace SingleResponsibility;
 
-/// <summary>Exports a collection of bet slips to an external representation.</summary>
+/// <summary>Exports a collection of bets to an external representation.</summary>
 public interface IExporter
 {
-    /// <summary>Exports the supplied bet slips.</summary>
-    void Export(IEnumerable<BetSlip> betSlips);
+    /// <summary>Exports the supplied bets.</summary>
+    void Export(IEnumerable<Bet> bets);
 }

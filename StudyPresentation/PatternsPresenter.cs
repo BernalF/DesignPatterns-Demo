@@ -22,10 +22,10 @@ internal static class PatternsPresenter
 
     private static readonly Lesson[] lessons =
     [
-        new("Strategy", "Choose an interchangeable algorithm or policy at runtime.", "BettingService receives IOddsCalculationStrategy.", "Use it for variants such as odds calculations, bet types, validation rules, or payout strategies.", """
-        internal sealed class BettingService(IOddsCalculationStrategy strategy)
+        new("Strategy", "Choose an interchangeable algorithm or policy at runtime.", "GameCatalogService receives IGameRankingStrategy.", "Use it for variants such as game ranking algorithms, filtering rules, sorting strategies, or recommendation engines.", """
+        internal sealed class GameCatalogService(IGameRankingStrategy rankingStrategy)
         {
-            public decimal CalculateFinalOdds(decimal baseOdds) => strategy.CalculateOdds(baseOdds);
+            public List<string> GetRankedGames(List<string> gameIds) => rankingStrategy.Rank(gameIds);
         }
         """, StrategyDemo.Run),
         new("Factory", "Centralize object creation when the concrete type varies.", "NotificationSenderFactory selects the INotificationSender implementation.", "Use it when configuration, input, or environment selects an implementation.", """
@@ -45,9 +45,9 @@ internal static class PatternsPresenter
         Result<string> result = withdrawalService.RequestWithdrawal(amount);
         if (!result.IsSuccess) return result.Error;
         """, ResultDemo.Run),
-        new("CQRS", "Separate commands that change state from queries that read state.", "CreateBetHandler writes; GetBetHistoryHandler reads.", "Use it when write workflows and read models have meaningfully different rules, performance needs, or permissions. Avoid it for simple CRUD.", """
-        Guid id = createBetHandler.Handle(new CreateBetCommand("PLAYER_001", 100m));
-        BetRecord? bet = getHistoryHandler.Handle(new GetBetHistoryQuery(id));
+        new("CQRS", "Separate commands that change state from queries that read state.", "PlaceBetHandler writes; GetBetHistoryHandler reads.", "Use it when write workflows and read models have meaningfully different rules, performance needs, or permissions. Avoid it for simple CRUD.", """
+        Guid id = placeBetHandler.Handle(new PlaceBetCommand("PLAYER_001", 50.00m));
+        var history = betHistoryHandler.Handle(new GetBetHistoryQuery("PLAYER_001"));
         """, CqrsDemo.Run)
     ];
 }

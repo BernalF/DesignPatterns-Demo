@@ -13,20 +13,20 @@ This is an **educational C# solution** that demonstrates **both SOLID principles
 ## Project Structure
 
 ### SOLID Principles (5 projects)
-- **SingleResponsability**: Each class has one job → BetSlipRepository (data) + CsvExporter (export)
+- **SingleResponsability**: Each class has one job → BetRepository (data) + CsvExporter (export)
 - **OpenClosePrinciple**: Extend without editing → New player tiers via `PlayerTier` abstraction (RegularPlayer, VipPlayer)
 - **LiskovSubstitution**: Contract-respecting subtypes → Only withdrawable accounts implement `IWithdrawableAccount` (RegularPlayerAccount vs RestrictedPlayerAccount)
-- **InterfaceSegregation**: Small, focused contracts → `ISlotMachine` and `ISportsBettingTerminal` instead of multi-method device interface
+- **InterfaceSegregation**: Small, focused contracts → `ISlotMachine` and `ILiveDealerTable` instead of multi-method device interface
 - **DependencyInversion**: Abstract dependencies → `PlayerNotificationService` depends on `INotificationChannel`, not concrete channels
 
 ### Design Patterns (7 projects)
-- **StrategyPattern**: Interchangeable algorithms (`IOddsCalculationStrategy` - FixedOdds vs DynamicOdds)
+- **StrategyPattern**: Interchangeable algorithms (`IGameRankingStrategy` - PopularityRanking vs RecommendationRanking)
 - **FactoryPattern**: Centralized object creation (`NotificationSenderFactory`)
 - **AdapterPattern**: Interface conversion (`LegacyPaymentAdapter` → `IWithdrawalProcessor`)
 - **DecoratorPattern**: Add behavior transparently (`CachedPlayerRepository` wraps `IPlayerRepository`)
 - **CommandPattern**: Requests as objects (`PlaceBetCommand`)
 - **ResultPattern**: Explicit success/failure (`Result<T>` for withdrawal validation)
-- **CqrsPattern**: Separate read/write (CreateBetHandler / GetBetHistoryHandler)
+- **CqrsPattern**: Separate read/write (PlaceBetHandler / GetBetHistoryHandler)
 
 ### Presentation (1 project)
 - **StudyPresentation**: Main console entry point (menu-driven, color-coded slides, keystroke navigation for both SOLID and patterns)

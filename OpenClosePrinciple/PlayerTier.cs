@@ -6,16 +6,16 @@ namespace OpenClose
         /// <summary>Gets or sets the player identifier.</summary>
         public string PlayerId { get; set; }
 
-        /// <summary>Gets or sets the total wagers placed by this player.</summary>
-        public decimal TotalWagers { get; set; }
+        /// <summary>Gets or sets the total amount bet by this player.</summary>
+        public decimal TotalBetAmount { get; set; }
 
-        protected PlayerTier(string playerId, decimal totalWagers)
+        protected PlayerTier(string playerId, decimal totalBetAmount)
         {
             PlayerId = playerId;
-            TotalWagers = totalWagers;
+            TotalBetAmount = totalBetAmount;
         }
 
-        /// <summary>Calculates the platform commission based on player tier and wagers.</summary>
+        /// <summary>Calculates the platform commission based on player tier and bet amount.</summary>
         public abstract decimal CalculateCommission();
     }
 }
