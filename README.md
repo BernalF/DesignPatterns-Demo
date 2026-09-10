@@ -82,6 +82,32 @@ class GameCatalogExporter { }
 
 **Common case / analogy:** When a new player tier like `HighRoller` or a new promotion model appears, you should not have to edit a giant `switch` that calculates rewards. You add a new implementation of the same abstraction instead. This is the same idea as using a plug-in system rather than rewriting a central controller every time campaign rules change.
 
+**Bad code → Good code:**
+
+```csharp
+// Bad: every new tier changes existing calculation logic
+decimal CalculateCommission(string tier, decimal totalBetAmount) => tier switch
+{
+  "Regular" => totalBetAmount * 0.05m,
+  "VIP" => totalBetAmount * 0.08m,
+  _ => 0m
+};
+```
+
+```csharp
+// Good: a new tier adds its own behavior through the shared contract
+abstract class PlayerTier
+{
+  protected decimal TotalBetAmount { get; init; }
+  public abstract decimal CalculateCommission();
+}
+
+class VipPlayer : PlayerTier
+{
+  public override decimal CalculateCommission() => TotalBetAmount * 0.08m;
+}
+```
+
 ### L - Liskov Substitution Principle (LSP)
 
 **Human explanation:** Do not claim an object can do something when it cannot. If code expects a type to perform an operation, every implementation must perform it correctly.
@@ -90,6 +116,24 @@ class GameCatalogExporter { }
 
 **Common case / analogy:** If `IWithdrawableAccount` promises a `Withdraw` operation, any account that implements it must actually support withdrawals. A restricted account cannot pretend to be withdrawable and then throw at runtime. This is like a casino wallet that advertises instant cashout support but silently blocks the request; the contract is broken.
 
+**Bad code → Good code:**
+
+```csharp
+// Bad: callers cannot safely use every IWithdrawableAccount
+class RestrictedPlayerAccount : IWithdrawableAccount
+{
+  public void Withdraw(decimal amount) => throw new NotSupportedException();
+}
+```
+
+```csharp
+// Good: only accounts that can withdraw implement the withdrawal capability
+interface IPlayerAccount { void Deposit(decimal amount); }
+interface IWithdrawableAccount : IPlayerAccount { void Withdraw(decimal amount); }
+
+class RestrictedPlayerAccount : IPlayerAccount { /* deposit only */ }
+```
+
 ### I - Interface Segregation Principle (ISP)
 
 **Human explanation:** Do not make a class carry methods it does not need. Keep its contracts small and relevant.
@@ -97,6 +141,23 @@ class GameCatalogExporter { }
 **Software explanation:** Client code should depend on small, cohesive interfaces tailored to its needs instead of broad interfaces that force implementations to provide unused operations.
 
 **Common case / analogy:** A slot terminal should not be forced to implement live dealer or table-management features it will never use. An `ISlotMachine` should be small and specific; a live table client should depend on `ILiveDealerTable`. This is like buying a casino operator toolbox that includes unrelated modules you never use—only the capabilities you actually need should be exposed.
+
+**Bad code → Good code:**
+
+```csharp
+// Bad: a slot-only machine must implement a feature it does not support
+interface IGamingTerminal
+{
+  void Operate(string gameId);
+  string OpenTable(string tableName);
+}
+```
+
+```csharp
+// Good: each client depends only on the capability it needs
+interface ISlotMachine { void Operate(string gameId); }
+interface ILiveDealerTable { string OpenTable(string tableName); }
+```
 
 ### D - Dependency Inversion Principle (DIP)
 
@@ -227,6 +288,24 @@ var sender = NotificationSenderFactory.Create(channel);
 
 **Common case / analogy:** A legacy game provider may expose an older feed contract, while your aggregation service expects a modern `IGameProvider` contract. An adapter wraps the old provider so the rest of the application works with the new interface without rewriting the legacy integration. It is like using a travel adapter so a device built for one plug type can work in another region.
 
+**Bad code → Good code:**
+
+```csharp
+// Bad: withdrawal code depends on the legacy method and its string result
+string result = legacyProvider.ProcessTransaction(amount);
+bool approved = result == "SUCCESS";
+```
+
+```csharp
+// Good: the adapter exposes the contract the application needs
+interface IWithdrawalProcessor { bool ProcessWithdrawal(decimal amount); }
+
+class LegacyPaymentAdapter(LegacyPaymentProvider provider) : IWithdrawalProcessor
+{
+  public bool ProcessWithdrawal(decimal amount) => provider.ProcessTransaction(amount) == "SUCCESS";
+}
+```
+
 #### Decorator Pattern
 
 **Human explanation:** Add new features to an object (like caching or logging) without modifying its original code or breaking other uses of it.
@@ -234,6 +313,29 @@ var sender = NotificationSenderFactory.Create(channel);
 **Software explanation:** Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality while preserving the original contract.
 
 **Common case / analogy:** If a provider catalog is slow, you can wrap it in a `CachedPlayerRepository`-style decorator that stores recent lookups without changing the original repository code. This is the same as adding a memory layer to a game catalog so the most common titles do not need to be fetched repeatedly from the provider.
+
+**Bad code → Good code:**
+
+```csharp
+// Bad: caching changes the repository's only responsibility
+class PlayerRepository
+{
+  private readonly Dictionary<int, string> cache = [];
+  public string GetPlayerName(int id) { /* cache and database logic mixed together */ }
+}
+```
+
+```csharp
+// Good: a wrapper adds caching while preserving the repository contract
+class CachedPlayerRepository(IPlayerRepository inner) : IPlayerRepository
+{
+  private readonly Dictionary<int, string> cache = [];
+
+  public string GetPlayerName(int id) => cache.TryGetValue(id, out var name)
+    ? name
+    : cache[id] = inner.GetPlayerName(id);
+}
+```
 
 #### Command Pattern
 
@@ -243,6 +345,24 @@ var sender = NotificationSenderFactory.Create(channel);
 
 **Common case / analogy:** When a player places a bet or claims a bonus, the action can be represented as a `PlaceBetCommand`-style object. That object can be queued, logged, retried, or replayed later. It is similar to sending a formal operations ticket to a backend team instead of relying on ad hoc manual execution.
 
+**Bad code → Good code:**
+
+```csharp
+// Bad: the caller must execute the bet immediately
+string PlaceBet(string playerId, decimal amount) => $"Bet placed for {playerId}.";
+```
+
+```csharp
+// Good: the action and its data travel together as a command
+interface ICommand { string Execute(); }
+record PlaceBetCommand(string PlayerId, decimal Amount) : ICommand
+{
+  public string Execute() => $"Bet placed for {PlayerId}.";
+}
+
+string result = invoker.Execute(new PlaceBetCommand("PLAYER_789", 50m));
+```
+
 #### Result Pattern
 
 **Human explanation:** Instead of throwing exceptions or returning null for failures, return an object that explicitly says whether the operation succeeded or failed and why.
@@ -251,6 +371,24 @@ var sender = NotificationSenderFactory.Create(channel);
 
 **Common case / analogy:** A withdrawal or bonus validation service should return `{ Success: false, Error: "Insufficient funds" }` instead of relying on exceptions hidden in a method chain. This is like receiving a clear receipt from a cashier or CRM system that says whether the transaction was approved or rejected, instead of guessing from a vague error.
 
+**Bad code → Good code:**
+
+```csharp
+// Bad: an expected validation outcome interrupts normal control flow
+string RequestWithdrawal(decimal amount)
+{
+  if (amount <= 0) throw new ArgumentOutOfRangeException(nameof(amount));
+  return "Withdrawal approved.";
+}
+```
+
+```csharp
+// Good: the caller receives success or failure as an explicit value
+Result<string> RequestWithdrawal(decimal amount) => amount > 0
+  ? Result<string>.Success("Withdrawal approved.")
+  : Result<string>.Failure("Withdrawal amount must be greater than zero.");
+```
+
 #### CQRS (Command Query Responsibility Segregation)
 
 **Human explanation:** Split your code that modifies data from your code that reads data. Different paths, different optimizations, easier to scale each independently.
@@ -258,6 +396,27 @@ var sender = NotificationSenderFactory.Create(channel);
 **Software explanation:** Separate the model that updates information from the model that reads information. This pattern, especially useful in complex domains, lets read and write sides evolve independently and optimize for their distinct concerns.
 
 **Common case / analogy:** A seamless wallet in an online casino uses a command handler to place and record bets (write-optimized for transaction validation, consistency, and audit trails) and a query handler to retrieve a player's bet history (read-optimized for speed and personalized reporting). The write side ensures every bet is correctly recorded and validated, while the read side delivers fast historical data. It is like the transactions desk and the reporting desk working from different copies of the same ledger, each tuned for their own job.
+
+**Bad code → Good code:**
+
+```csharp
+// Bad: one service mixes state changes with read concerns
+class BetService
+{
+  public Guid PlaceBet(string playerId, decimal amount) { /* write */ }
+  public List<BetRecord> GetHistory(string playerId) { /* read */ }
+}
+```
+
+```csharp
+// Good: distinct messages and handlers make the read/write boundary explicit
+record BetRecord(Guid Id, string PlayerId, decimal Amount);
+record PlaceBetCommand(string PlayerId, decimal Amount);
+record GetBetHistoryQuery(string PlayerId);
+
+Guid betId = placeBetHandler.Handle(new PlaceBetCommand("PLAYER_001", 50m));
+List<BetRecord> history = betHistoryHandler.Handle(new GetBetHistoryQuery("PLAYER_001"));
+```
 
 ---
 

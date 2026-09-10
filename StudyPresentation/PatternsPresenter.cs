@@ -22,7 +22,7 @@ internal static class PatternsPresenter
 
     private static readonly Lesson[] lessons =
     [
-        new("Strategy", "Choose an interchangeable algorithm or policy at runtime.", "GameCatalogService receives IGameRankingStrategy.", "Use it for variants such as game ranking algorithms, filtering rules, sorting strategies, or recommendation engines.", """
+        new("Strategy", "Choose an interchangeable algorithm or policy at runtime.", "GameCatalogService receives IGameRankingStrategy.", "Use it when the same task needs interchangeable algorithms, such as game ranking or recommendations.", """
         internal sealed class GameCatalogService(IGameRankingStrategy rankingStrategy)
         {
             public List<string> GetRankedGames(List<string> gameIds) => rankingStrategy.Rank(gameIds);
@@ -37,7 +37,7 @@ internal static class PatternsPresenter
         new("Decorator", "Add behavior by wrapping an object without changing its original class.", "CachedPlayerRepository wraps IPlayerRepository and preserves its API.", "Use it for cross-cutting behavior such as caching, logging, metrics, retries, or authorization.", """
         IPlayerRepository repository = new CachedPlayerRepository(new PlayerRepository());
         """, DecoratorDemo.Run),
-        new("Command", "Represent a request or action as an object.", "PlaceBetCommand carries both the action and its required data (player and amount).", "Use it for queues, jobs, undo/redo, auditing, retries, or CQRS writes.", """
+        new("Command", "Represent a request or action as an object.", "PlaceBetCommand packages a player's bet request and amount.", "Use it to queue, audit, retry, or replay actions, including CQRS write requests.", """
         ICommand command = new PlaceBetCommand("PLAYER_789", 50.00m);
         string result = invoker.Execute(command);
         """, CommandDemo.Run),
@@ -45,7 +45,7 @@ internal static class PatternsPresenter
         Result<string> result = withdrawalService.RequestWithdrawal(amount);
         if (!result.IsSuccess) return result.Error;
         """, ResultDemo.Run),
-        new("CQRS", "Separate commands that change state from queries that read state.", "PlaceBetHandler writes; GetBetHistoryHandler reads.", "Use it when write workflows and read models have meaningfully different rules, performance needs, or permissions. Avoid it for simple CRUD.", """
+        new("CQRS", "Separate commands that change state from queries that read state.", "A command places a bet; a separate query returns the player's bet history.", "Use it when reading and writing have different rules, performance needs, or permissions. Avoid it for simple CRUD.", """
         Guid id = placeBetHandler.Handle(new PlaceBetCommand("PLAYER_001", 50.00m));
         var history = betHistoryHandler.Handle(new GetBetHistoryQuery("PLAYER_001"));
         """, CqrsDemo.Run)

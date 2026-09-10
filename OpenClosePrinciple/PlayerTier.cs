@@ -3,6 +3,7 @@ namespace OpenClose
     /// <summary>Represents a player with a specific tier that affects commission calculation.</summary>
     public abstract class PlayerTier
     {
+        // New tiers extend this contract instead of changing existing commission calculations or callers.
         /// <summary>Gets or sets the player identifier.</summary>
         public string PlayerId { get; set; }
 

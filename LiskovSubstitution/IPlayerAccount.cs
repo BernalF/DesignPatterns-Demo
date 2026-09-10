@@ -2,6 +2,7 @@ namespace LiskovSubstitution;
 
 internal interface IPlayerAccount
 {
+    // Restricted accounts can honor this smaller contract without falsely promising that withdrawals work.
     decimal Balance { get; }
 
     /// <summary>
@@ -13,6 +14,7 @@ internal interface IPlayerAccount
 
 internal interface IWithdrawableAccount : IPlayerAccount
 {
+    // Callers can safely invoke Withdraw because every implementation explicitly supports this capability.
     /// <summary>
     /// Withdraws funds from a player account that allows withdrawals.
     /// </summary>

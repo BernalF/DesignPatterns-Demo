@@ -2,6 +2,7 @@ namespace InterfaceSegregation;
 
 internal interface ISlotMachine
 {
+    // Slot clients depend only on this capability and are not forced to implement live-dealer operations.
     /// <summary>
     /// Operates a slot machine game.
     /// </summary>

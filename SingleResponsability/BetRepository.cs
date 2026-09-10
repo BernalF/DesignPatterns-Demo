@@ -3,6 +3,7 @@ namespace SingleResponsibility;
 /// <summary>Retrieves bet data from the in-memory storage.</summary>
 public class BetRepository
 {
+    // Data retrieval changes independently from CSV formatting, so this class has one reason to change.
     private readonly FakeStorage<Bet> storage = new();
 
     /// <summary>Initializes the repository with sample bets.</summary>

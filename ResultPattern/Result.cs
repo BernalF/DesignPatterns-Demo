@@ -1,5 +1,6 @@
 namespace ResultPattern;
 
+// Expected validation failures become explicit values, so callers handle both outcomes without exception control flow.
 internal sealed record Result<T>(T? Value, string? Error)
 {
     public bool IsSuccess => Error is null;

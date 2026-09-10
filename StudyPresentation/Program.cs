@@ -14,7 +14,7 @@ internal static class Program
             ConsolePresentation.Write("                 SOFTWARE DESIGN STUDY MENU", ConsoleColor.Cyan);
             ConsolePresentation.Write("============================================================", ConsoleColor.Cyan);
             Console.WriteLine("1. SOLID principles");
-            Console.WriteLine("2. Modern design patterns");
+            Console.WriteLine("2. Design patterns");
             Console.WriteLine("0. Exit");
             Console.Write("Select a study track: ");
 

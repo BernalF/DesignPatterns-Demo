@@ -1,5 +1,6 @@
 namespace DecoratorPattern;
 
+// The decorator adds caching while preserving IPlayerRepository, leaving the underlying repository unchanged.
 internal sealed class CachedPlayerRepository(IPlayerRepository inner) : IPlayerRepository
 {
     private readonly Dictionary<int, string> cache = [];

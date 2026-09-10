@@ -46,11 +46,11 @@ internal static class SolidPresenter
             public void Withdraw(decimal amount) => throw new NotSupportedException();
         }
         """),
-        new("I - Interface Segregation Principle (ISP)", "Clients should not depend on methods they do not use.", "SimpleSlotMachine implements ISlotMachine only; live dealer access is a separate capability.", "Use it when a broad interface forces implementations to throw or provide meaningless methods.", """
+        new("I - Interface Segregation Principle (ISP)", "Clients should not depend on methods they do not use.", "SimpleSlotMachine supports only slots; live dealer access is a separate capability.", "Use it when a broad interface forces implementations to throw or provide meaningless methods.", """
         interface ISlotMachine { void Operate(string gameId); }
         interface ILiveDealerTable { string OpenTable(string tableName); }
         """, InterfaceSegregationDemo.Run),
-        new("D - Dependency Inversion Principle (DIP)", "High-level modules should depend on abstractions, not concrete implementations.", "PlayerNotificationService receives INotificationChannel instead of creating EmailNotificationChannel itself.", "Use it at boundaries such as databases, HTTP APIs, messaging, storage, and external providers.", """
+        new("D - Dependency Inversion Principle (DIP)", "High-level modules should depend on abstractions, not concrete implementations.", "PlayerNotificationService depends on INotificationChannel, not a concrete delivery channel.", "Use it at boundaries such as databases, HTTP APIs, messaging, storage, and external providers.", """
         internal sealed class PlayerNotificationService(INotificationChannel channel)
         {
             // The service depends on the abstraction.

@@ -2,6 +2,7 @@ namespace DependencyInversion;
 
 internal sealed class PlayerNotificationService
 {
+    // The business service depends on the channel contract, so delivery details can change independently.
     private readonly INotificationChannel notificationChannel;
 
     public PlayerNotificationService(INotificationChannel notificationChannel)
