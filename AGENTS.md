@@ -1,10 +1,11 @@
-# AI Agent Guidelines for SOLID Principles Study Project
+# AI Agent Guidelines for SOLID Principles & Design Patterns Study Project
 
 ## Project Overview
 
-This is an **educational C# solution** that demonstrates SOLID principles and modern design patterns through **executable, focused examples**. Each principle or pattern is isolated in its own project to maximize clarity and learning value.
+This is an **educational C# solution** that demonstrates **both SOLID principles AND modern design patterns** through **executable, focused examples**. Each principle or pattern is isolated in its own project to maximize clarity and learning value.
 
-- **Target Audience**: Developers learning SOLID and design patterns
+- **Target Audience**: Developers learning SOLID principles and design patterns
+- **Domain Context**: Gambling platform (unified domain across all examples)
 - **Delivery Model**: Interactive console presentation (StudyPresentation) + individual runnable projects
 - **Tech Stack**: .NET 10.0, C# 13+ with modern features (top-level statements, primary constructors, sealed types)
 - **Entry Point**: `StudyPresentation` project (main menu for SOLID or patterns track)
@@ -27,9 +28,8 @@ This is an **educational C# solution** that demonstrates SOLID principles and mo
 - **ResultPattern**: Explicit success/failure (`Result<T>` for withdrawal validation)
 - **CqrsPattern**: Separate read/write (CreateBetHandler / GetBetHistoryHandler)
 
-### Presentation (2 projects)
-- **StudyPresentation**: Main console entry point (menu-driven, color-coded slides, keystroke navigation)
-- **StudyMenu** / **PatternsStudy** / **SolidStudy**: Supporting presentation logic
+### Presentation (1 project)
+- **StudyPresentation**: Main console entry point (menu-driven, color-coded slides, keystroke navigation for both SOLID and patterns)
 
 See [README.md](README.md) for detailed principle definitions and pattern examples.
 
@@ -96,7 +96,7 @@ internal static class Program
 
 **Build solution:**
 ```bash
-dotnet build SOLID.sln
+dotnet build DesignPatternsDemo.sln
 ```
 
 **Run StudyPresentation (interactive menu):**
@@ -211,9 +211,9 @@ new("Title",
 ```csharp
 new("L - Liskov Substitution Principle (LSP)", 
     "An implementation must preserve the promises made by its abstraction.", 
-    "FixedTermAccount does not claim to support Withdraw; only SavingsAccount can implement IWithdrawableAccount.", 
+    "RestrictedPlayerAccount does not claim to support Withdraw; only RegularPlayerAccount can implement IWithdrawableAccount.", 
     "Use it whenever inheritance or an interface represents a capability that callers depend on.",
-    """internal interface IWithdrawableAccount : IAccount
+    """internal interface IWithdrawableAccount : IPlayerAccount
 {
     void Withdraw(decimal amount);
 }
@@ -223,7 +223,7 @@ static void WithdrawFrom(IWithdrawableAccount account, decimal amount)
     account.Withdraw(amount);
 }""",
     LiskovSubstitutionDemo.Run, 
-    """class FixedTermAccount : IWithdrawableAccount
+    """class RestrictedPlayerAccount : IPlayerAccount
 {
     public void Withdraw(decimal amount) => throw new NotSupportedException();
 }""")
@@ -283,7 +283,7 @@ This project uses **only the .NET runtime** to remain teachable and dependency-f
 To verify the solution builds and all projects run:
 ```bash
 # Build entire solution
-dotnet build SOLID.sln
+dotnet build DesignPatternsDemo.sln
 
 # Run the interactive presentation (main entry point)
 cd StudyPresentation && dotnet run
@@ -296,7 +296,7 @@ cd StrategyPattern && dotnet run
 ## Useful Links
 
 - [README.md](README.md) — Principle definitions, pattern descriptions, and example gallery
-- [SOLID.sln](SOLID.sln) — Solution file with all project references
+- [DesignPatternsDemo.sln](DesignPatternsDemo.sln) — Solution file with all project references
 
 ---
 
