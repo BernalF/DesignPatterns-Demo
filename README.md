@@ -73,13 +73,47 @@ The following patterns complement SOLID. They are practical techniques for organ
 
 ### Pattern Definitions
 
-- **Strategy:** Encapsulates interchangeable algorithms behind a shared interface.
-- **Factory:** Centralizes object creation so callers do not depend on concrete constructors.
-- **Adapter:** Converts one interface into another interface expected by the client.
-- **Decorator:** Wraps an object to add behavior while preserving the original contract.
-- **Command:** Encapsulates a request as an object so it can be executed, queued, logged, or retried.
-- **Result Pattern:** Models expected success or failure explicitly as a returned value.
-- **CQRS:** Separates commands that change state from queries that read state.
+#### Strategy Pattern
+
+**Human explanation:** Allow the user to choose from different ways of doing the same task, without hardcoding the choice into your code.
+
+**Software explanation:** Define a family of algorithms, encapsulate each one, and make them interchangeable. The strategy lets the algorithm vary independently from the clients that use it.
+
+#### Factory Pattern
+
+**Human explanation:** Avoid asking "which concrete class do I need?" by delegating object creation to a specialized factory.
+
+**Software explanation:** Provide an interface for creating objects, but let subclasses or a factory method decide which class to instantiate. This decouples the client from concrete constructors and centralizes creation logic.
+
+#### Adapter Pattern
+
+**Human explanation:** Use a third-party tool or legacy system by wrapping it so it fits the interface your code expects.
+
+**Software explanation:** Convert the interface of a class into another interface that clients expect. An adapter lets classes work together that could not otherwise because of incompatible interfaces.
+
+#### Decorator Pattern
+
+**Human explanation:** Add new features to an object (like caching or logging) without modifying its original code or breaking other uses of it.
+
+**Software explanation:** Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality while preserving the original contract.
+
+#### Command Pattern
+
+**Human explanation:** Turn a user request or action into an object that can be stored, queued, undone, logged, or executed later.
+
+**Software explanation:** Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.
+
+#### Result Pattern
+
+**Human explanation:** Instead of throwing exceptions or returning null for failures, return an object that explicitly says whether the operation succeeded or failed and why.
+
+**Software explanation:** Represent the outcome of an operation as a value that can be either success (with a result) or failure (with an error). This makes error handling explicit and composable.
+
+#### CQRS (Command Query Responsibility Segregation)
+
+**Human explanation:** Split your code that modifies data from your code that reads data. Different paths, different optimizations, easier to scale each independently.
+
+**Software explanation:** Separate the model that updates information from the model that reads information. This pattern, especially useful in complex domains, lets read and write sides evolve independently and optimize for their distinct concerns.
 
 ## The Interactive Presentation
 
