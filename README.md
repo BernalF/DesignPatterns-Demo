@@ -1,8 +1,28 @@
-# SOLID Principles in C#
+# SOLID Principles in C# 🎯
 
 A small C# solution for studying SOLID principles and widely used design patterns through executable examples.
 
 The solution contains one project per concept and one interactive console presentation. `StudyPresentation` is the central entry point for choosing the SOLID or design-patterns study track.
+
+## 📋 Table of Contents
+
+- [Requirements](#requirements)
+- [What Is SOLID?](#what-is-solid)
+  - [S - Single Responsibility Principle (SRP)](#s---single-responsibility-principle-srp)
+  - [O - Open/Closed Principle (OCP)](#o---openclosed-principle-ocp)
+  - [L - Liskov Substitution Principle (LSP)](#l---liskov-substitution-principle-lsp)
+  - [I - Interface Segregation Principle (ISP)](#i---interface-segregation-principle-isp)
+  - [D - Dependency Inversion Principle (DIP)](#d---dependency-inversion-principle-dip)
+- [SOLID Projects](#-solid-projects)
+- [Design Patterns](#-design-patterns)
+  - [Pattern Definitions](#pattern-definitions)
+- [Interactive Presentation](#interactive-presentation)
+- [Quick Start](#quick-start)
+  - [Run the Presentation](#run-the-presentation)
+  - [Run Individual Examples](#run-individual-examples)
+  - [Build the Solution](#build-the-solution)
+
+---
 
 ## Requirements
 
@@ -45,7 +65,9 @@ The following software definitions are concise paraphrases of the principles pop
 
 **Software explanation:** High-level policy and low-level implementation should both depend on abstractions. Details implement those abstractions, allowing the direction of dependency to be inverted.
 
-## Projects
+---
+
+## 🎓 SOLID Projects
 
 | Project | Principle | Example |
 | --- | --- | --- |
@@ -56,7 +78,9 @@ The following software definitions are concise paraphrases of the principles pop
 | `DependencyInversion` | DIP | `PlayerNotificationService` depends on `INotificationChannel`, allowing the delivery channel (email, SMS, push) to change independently. |
 | `StudyPresentation` | Interactive presentation | Presents all five SOLID examples in one console session. |
 
-## Design Patterns
+---
+
+## 🏗️ Design Patterns
 
 The following patterns complement SOLID. They are practical techniques for organizing object creation, behavior, integrations, and application workflows.
 
@@ -115,7 +139,9 @@ The following patterns complement SOLID. They are practical techniques for organ
 
 **Software explanation:** Separate the model that updates information from the model that reads information. This pattern, especially useful in complex domains, lets read and write sides evolve independently and optimize for their distinct concerns.
 
-## The Interactive Presentation
+---
+
+## 🎬 Interactive Presentation
 
 `StudyPresentation` is designed for explaining the concepts to an audience. The main menu lets you choose the SOLID or design-patterns track. Each slide contains:
 
@@ -126,21 +152,15 @@ The following patterns complement SOLID. They are practical techniques for organ
 
 The application waits for a key press between each stage, so the presenter can explain the concept before advancing. Sections use different console colors to distinguish definitions, applied design decisions, code, bad designs, and results.
 
-The Liskov slide also includes a red, display-only bad-design example. It shows a `FixedTermAccount` falsely implementing `IWithdrawableAccount` and throwing at runtime. The correct version avoids the error by implementing only the smaller contract that it can honor.
+The Liskov slide also includes a red, display-only bad-design example. It shows a `RestrictedPlayerAccount` falsely implementing `IWithdrawableAccount` and throwing at runtime. The correct version avoids the error by implementing only the smaller contract that it can honor.
 
-## Start From the Menu
+---
 
-Open `SOLID.sln` in Visual Studio, set `StudyPresentation` as the startup project, then run it. Select `1` for SOLID or `2` for design patterns.
+## ⚡ Quick Start
 
-From a terminal in the solution root:
+### Run the Presentation
 
-```powershell
-dotnet run --project .\StudyPresentation\StudyPresentation.csproj
-```
-
-## Run the Presentation
-
-The menu is the recommended presentation entry point. To run the unified host directly from a terminal:
+Open `DesignPatternsDemo.sln` in Visual Studio, set `StudyPresentation` as the startup project, then run it. Select `1` for SOLID or `2` for design patterns.
 
 From a terminal in the solution root:
 
@@ -150,30 +170,32 @@ dotnet run --project .\StudyPresentation\StudyPresentation.csproj
 
 Use any key to advance through the presentation.
 
-## Run an Individual Example
+### Run Individual Examples
 
-Each principle project can also be run by itself:
+Each principle and pattern project can be run by itself:
 
 ```powershell
 dotnet run --project .\LiskovSubstitution\LiskovSubstitution.csproj
 ```
 
-Replace `LiskovSubstitution` with the project you want to explore.
+Replace `LiskovSubstitution` with any other project name to explore.
 
-## Build the Solution
+### Build the Solution
 
 ```powershell
-dotnet build .\SOLID.sln
+dotnet build .\DesignPatternsDemo.sln
 ```
 
-## Liskov Substitution in Plain Terms
+---
+
+## 💡 Key Concept: Liskov Substitution in Plain Terms
 
 An interface is a promise. When a type implements an interface, callers trust that every operation in that interface is supported.
 
-`IWithdrawableAccount` promises that `Withdraw` works. `SavingsAccount` can keep that promise. A fixed-term account cannot allow withdrawals, so it must not implement `IWithdrawableAccount` and then throw an exception when `Withdraw` is called.
+`IWithdrawableAccount` promises that `Withdraw` works. `RegularPlayerAccount` can keep that promise. A restricted player account cannot allow withdrawals, so it must not implement `IWithdrawableAccount` and then throw an exception when `Withdraw` is called.
 
 This is the key LSP rule:
 
-> A type must not claim to support behavior that it cannot safely provide.
+> **A type must not claim to support behavior that it cannot safely provide.**
 
-By using `IAccount` for common behavior and `IWithdrawableAccount` only for accounts that support withdrawals, invalid uses are prevented at compile time.
+By using `IPlayerAccount` for common behavior and `IWithdrawableAccount` only for accounts that support withdrawals, invalid uses are prevented at compile time.
