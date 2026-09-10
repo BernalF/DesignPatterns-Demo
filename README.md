@@ -78,7 +78,7 @@ class GameCatalogExporter { }
 
 **Human explanation:** Add new behavior without repeatedly editing code that already works.
 
-**Software explanation:** Design modules so their behavior can be extended, usually through polymorphism or composition, while existing, tested source code remains unchanged.
+**Software explanation:** Software entities should be open for extension but closed for modification. Design modules so their behavior can be extended, usually through polymorphism or composition, while existing, tested source code remains unchanged.
 
 **Common case / analogy:** When a new player tier like `HighRoller` or a new promotion model appears, you should not have to edit a giant `switch` that calculates rewards. You add a new implementation of the same abstraction instead. This is the same idea as using a plug-in system rather than rewriting a central controller every time campaign rules change.
 
@@ -112,7 +112,7 @@ class VipPlayer : PlayerTier
 
 **Human explanation:** Do not claim an object can do something when it cannot. If code expects a type to perform an operation, every implementation must perform it correctly.
 
-**Software explanation:** Any implementation used through a base type or interface must preserve that abstraction's observable behavior, including its valid inputs, results, invariants, and error expectations.
+**Software explanation:** Every subclass or derived class should be substitutable for its base or parent class. Any implementation used through a base type or interface must preserve that abstraction's observable behavior, including its valid inputs, results, invariants, and error expectations.
 
 **Common case / analogy:** If `IWithdrawableAccount` promises a `Withdraw` operation, any account that implements it must actually support withdrawals. A restricted account cannot pretend to be withdrawable and then throw at runtime. This is like a casino wallet that advertises instant cashout support but silently blocks the request; the contract is broken.
 
@@ -163,7 +163,7 @@ interface ILiveDealerTable { string OpenTable(string tableName); }
 
 **Human explanation:** Important business logic should not be tightly tied to a particular database, email provider, or framework.
 
-**Software explanation:** High-level policy and low-level implementation should both depend on abstractions. Details implement those abstractions, allowing the direction of dependency to be inverted.
+**Software explanation:** High-level modules should not depend on low-level modules; both should depend on abstractions, ensuring code relies on contracts rather than concrete implementations.
 
 **Common case / analogy:** A `PlayerNotificationService` should depend on an `INotificationChannel`, not on a concrete email sender written directly into the service. This is the same as depending on a provider abstraction rather than hard-coding one delivery system. It keeps the core logic stable even when the external communication channel changes.
 
