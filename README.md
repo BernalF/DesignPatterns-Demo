@@ -15,6 +15,7 @@ The solution entry point is `StudyPresentation`, which offers separate tracks fo
 
 ## 📋 Table of Contents
 
+- [Four Pillars of OOP](#four-pillars-of-oop)
 - [Requirements](#requirements)
 - [What Is SOLID?](#what-is-solid)
   - [S - Single Responsibility Principle (SRP)](#s---single-responsibility-principle-srp)
@@ -42,6 +43,46 @@ The solution entry point is `StudyPresentation`, which offers separate tracks fo
 - [Project Structure](#-project-structure)
 - [Learning Path](#-learning-path)
 - [Key Concept: Liskov Substitution](#-deep-dive-liskov-substitution-in-plain-terms)
+
+---
+
+## Four Pillars of OOP
+
+The four core pillars of object-oriented programming are the building blocks behind most of the patterns and principles in this project. They help organize code around real-world concepts such as players, accounts, bets, providers, and notifications.
+
+### Abstraction
+
+Hide implementation details and expose only the functionality the caller needs.
+
+- A player sees a `Withdraw()` method, not the internal balance rules or provider-specific logic.
+- In this project, abstractions such as `IPlayerRepository`, `INotificationChannel`, and `IWithdrawableAccount` keep callers focused on behavior rather than internals.
+- This reduces complexity and makes code easier to change safely.
+
+### Encapsulation
+
+Keep each object's state and behavior together, and control access to that state through access modifiers and well-defined contracts.
+
+- An account owns its balance and validation rules.
+- The outside world should not directly mutate internal state in unsafe ways.
+- Encapsulation helps preserve invariants such as "a player cannot withdraw more than their balance".
+
+### Inheritance
+
+Create new types that inherit attributes and methods from an existing base type, reusing common behavior.
+
+- A `RegularPlayer` and a `VipPlayer` can share common player logic while adding their own rules.
+- Inheritance is useful when a new type is a specialized version of an existing type.
+- The key is to keep the hierarchy meaningful and consistent with the contract it represents.
+
+### Polymorphism
+
+Allow different implementations to respond to the same operation in different ways.
+
+- A `PlayerTier` can calculate commission differently for regular and VIP players.
+- Method overriding and shared interfaces let the same call site behave correctly for each concrete type.
+- This is one of the main reasons abstractions and patterns are so powerful in object-oriented systems.
+
+> In short: abstraction hides details, encapsulation protects state, inheritance reuses behavior, and polymorphism allows common code to work with different implementations.
 
 ---
 
